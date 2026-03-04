@@ -1,0 +1,11 @@
+saraha app
+DB : 
+    user >> email , password , userName , phone number , gender , isConfirmed
+    massage >> body  ,  sender , recever
+
+
+
+APIS : 
+    auth >> register , login
+    user >> profile , updateUser
+    massages >> todo 
