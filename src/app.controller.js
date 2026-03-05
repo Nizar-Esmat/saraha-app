@@ -1,5 +1,5 @@
 import dbConnect from "./db/connections.js";
-
+import authController from "./modules/auth/auth.controller.js";
 const bootStrap = async (app, express) => {
   app.use(express.json());
 
@@ -7,6 +7,8 @@ const bootStrap = async (app, express) => {
   app.get("/", (req, res) => {
     res.send("hello world");
   });
+
+  app.use("/auth", authController);
 
   app.use((req, res) => {
     res.status(404).send("not found");

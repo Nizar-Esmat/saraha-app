@@ -9,31 +9,30 @@ const userSchema = new Schema(
   {
     email: {
       type: String,
-      required: true,
-      unique: true,
+      required: [true, "email is required"],
+      unique: [true, "email must be unique"],
     },
     password: {
       type: String,
-      required: true,
+      required: [true, "password is required"],
     },
     userName: {
       type: String,
-      required: true,
-      unique: true,
-    },
-    phoneNumber: {
-      type: String,
-      required: true,
+      required: [true, "userName is required"],
+      unique: [true, "userName must be unique"],
     },
     gender: {
       type: String,
-      required: true,
-      enum: Object.values(gender),
+      required: [true, "gender is required"],
+      enum: {
+        values: Object.values(gender),
+        message: "gender must be female or male",
+      },
     },
     phoneNumber: {
       type: String,
-      required: true,
-      unique: true,
+      required: [true, "phoneNumber is required"],
+      unique: [true, "phoneNumber must be unique"],
     },
     isConfirmed: {
       type: Boolean,
@@ -42,6 +41,7 @@ const userSchema = new Schema(
   },
   {
     timestamps: true,
+    versionKey: false,
   },
 );
 
