@@ -1,6 +1,7 @@
 import User from "../../db/models/user.model.js";
 import bcrypt from "bcryptjs";
 import CryptoJS from "crypto-js";
+import jwt from "jsonwebtoken";
 export const register = async (req, res) => {
   try {
     const { email, password, userName, phoneNumber, gender } = req.body;
@@ -37,7 +38,10 @@ export const login = async (req, res) => {
         .status(401)
         .json({ status: false, massage: "invalid credentials" });
     }
-    return res.status(200).json({ status: true, massage: "login success" ,  data: user });
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_TOKEN);
+    return res
+      .status(200)
+      .json({ status: true, massage: "login success", token, data: user });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ status: false, massage: error.message });
