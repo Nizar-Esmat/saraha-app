@@ -9,7 +9,7 @@ export const register = async (req, res) => {
       email,
       password: bcrypt.hashSync(password, 10),
       userName,
-      phoneNumber: CryptoJS.AES.encrypt(
+      phoneNumber:  CryptoJS.AES.encrypt(
         phoneNumber,
         process.env.CryptoJSKey,
       ).toString(),
@@ -38,7 +38,7 @@ export const login = async (req, res) => {
         .status(401)
         .json({ status: false, massage: "invalid credentials" });
     }
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_TOKEN);
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "1d" });
     return res
       .status(200)
       .json({ status: true, massage: "login success", token, data: user });
@@ -47,3 +47,4 @@ export const login = async (req, res) => {
     return res.status(500).json({ status: false, massage: error.message });
   }
 };
+
