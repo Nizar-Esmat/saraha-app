@@ -5,15 +5,18 @@ const bootStrap = async (app, express) => {
   app.use(express.json());
 
   await dbConnect();
-  app.get("/", (req, res) => {
+  app.get("/", (req, res , next) => {
     res.send("hello world");
   });
   app.use("/auth", authController);
   app.use("/user", userController);
-
-  app.use((req, res) => {
-    res.status(404).send("not found");
+  app.use((req, res , next) => {
+    return next(new Error("route not found" , { cause: 404 }));
   });
+
+  app.use((error, req, res, next) => {
+    return res.status(error.cause || 500).json({ status: false, massage: error.message , stack : error.stack });
+  })
 };
 
 export default bootStrap;
