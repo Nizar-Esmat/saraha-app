@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as authService from "./auth.service.js";
-import asyncHandler from "../../utils/async-handler.js";
+import asyncHandler from "../../utils/error/async-handler.js";
 
 const router = Router();
 

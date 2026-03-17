@@ -10,7 +10,7 @@ const transPorter = nodemailer.createTransport({
     }
 })
 
-const sendEmail = async (options) => {
+export const sendEmail = async (options) => {
     const message = {
         from: "saraha app",
         to: options.email,
@@ -23,5 +23,3 @@ const sendEmail = async (options) => {
         console.log("email did not sent");
     }
 }
-
-export default sendEmail
