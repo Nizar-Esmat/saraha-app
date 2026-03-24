@@ -3,7 +3,7 @@ const asyncHandler = (fn) => {
         try {
             await fn(req, res, next);
         } catch (error) {
-            return next(error);
+            return next(new Error(error.message, { cause: 500 }));
         }
     }
 }

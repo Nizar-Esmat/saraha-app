@@ -1,10 +1,11 @@
 import User from "../../db/models/user.model.js";
-import {sendEmail , compare, encrypt, genrateTokens, hash, verifyToken } from "../../utils/index.js";
-
+import { sendEmail, compare, encrypt, genrateTokens, hash, verifyToken } from "../../utils/index.js";
+import { gender as genderType } from "../../../src/db/models/user.model.js";
 
 
 export const register = async (req, res, next) => {
   const { email, password, userName, phoneNumber, gender } = req.body;
+
   const newUser = await User.create({
     email,
     password: hash({ password }),
