@@ -4,7 +4,10 @@ export const gender = {
   FEMALE: "female",
   MALE: "male",
 };
-
+export const role = {
+  USER: "user",
+  ADMIN: "admin",
+}
 const userSchema = new Schema(
   {
     email: {
@@ -33,6 +36,14 @@ const userSchema = new Schema(
       type: String,
       required: [true, "phoneNumber is required"],
       unique: [true, "phoneNumber must be unique"],
+    },
+    role: {
+      type: String,
+      enum: {
+        values: Object.values(role),
+        message: "role must be user or admin",
+      },
+      default: role.USER,
     },
     isConfirmed: {
       type: Boolean,
