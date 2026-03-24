@@ -10,7 +10,7 @@ export const sendMassage = async (req, res, next) => {
         return next(new Error(massages.user.notFound + receiver, { cause: 404 }));
     }
     const massage = await Massage.create({ receiver, content, sender });
-    return res.status(200).json({ status: true, message: massages.message.created, data: massage });
+    return res.status(201).json({ status: true, message: massages.message.created, data: massage });
 }
 
 export const getMassages = async (req, res, next) => {

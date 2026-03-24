@@ -12,5 +12,11 @@ const genrateMassages = (entity) => {
 
 export const massages = {
     user: { ...genrateMassages("user"), invalidCredentials: "invalid credentials" },
-    message: genrateMassages("message")
+    message: genrateMassages("message"),
+    auth: {
+        tokenRequired: "token is required",
+        invalidBearer: "invalid bearer token",
+        unauthorized: "unauthorized",
+        serverError: "authentication error"
+    }
 }

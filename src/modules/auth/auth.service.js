@@ -1,6 +1,5 @@
 import User from "../../db/models/user.model.js";
 import { sendEmail, compare, encrypt, genrateTokens, hash, verifyToken } from "../../utils/index.js";
-import { gender as genderType } from "../../../src/db/models/user.model.js";
 import { massages } from "../../utils/messages/index.js";
 
 
@@ -29,6 +28,9 @@ export const register = async (req, res, next) => {
     message: `click on this link to verify your email `,
     html: `<a href="${link}">click here to verify your email</a>`
   })
+  if(!isSent) {
+    return next(new Error("email did not sent", { cause: 500 }));
+  }
   return res.status(201).json({ status: true, message: massages.user.created, data: newUser });
 }
 
