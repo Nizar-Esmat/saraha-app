@@ -6,6 +6,11 @@ import { massages } from "../../utils/messages/index.js";
 export const register = async (req, res, next) => {
   const { email, password, userName, phoneNumber, gender } = req.body;
 
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    return next(new Error(massages.user.alreadyExists, { cause: 409 }));
+  }
+
   const newUser = await User.create({
     email,
     password: hash({ password }),
@@ -28,10 +33,18 @@ export const register = async (req, res, next) => {
     message: `click on this link to verify your email `,
     html: `<a href="${link}">click here to verify your email</a>`
   })
-  if(!isSent) {
+  if (!isSent) {
     return next(new Error("email did not sent", { cause: 500 }));
   }
-  return res.status(201).json({ status: true, message: massages.user.created, data: newUser });
+
+  const sendData = {
+    userName: newUser.userName,
+    email: newUser.email,
+    phoneNumber: CryptoJS.AES.decrypt({ data: newUser.phoneNumber }),
+    gender: newUser.gender,
+  }
+
+  return res.status(201).json({ status: true, message: massages.user.created, data: sendData });
 }
 
 
@@ -60,13 +73,19 @@ export const login = async (req, res, next) => {
   })
 
   if (user.isDeleted) {
-    await User.findByIdAndUpdate(user.id, { isDeleted: false});
+    await User.findByIdAndUpdate(user.id, { isDeleted: false });
   }
 
-
+  const sendData = {
+    userName: user.userName,
+    email: user.email,
+    phoneNumber: CryptoJS.AES.decrypt(user.phoneNumber, process.env.CryptoJSKey).toString(CryptoJS.enc.Utf8),
+    gender: user.gender,
+    id: user.id
+  }
   return res
     .status(200)
-    .json({ status: true, message: massages.user.fetch, token, data: user });
+    .json({ status: true, message: massages.user.fetch, token, data: sendData });
 }
 
 
