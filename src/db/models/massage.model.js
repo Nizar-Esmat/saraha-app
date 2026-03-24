@@ -2,7 +2,7 @@ import { Schema, Types, model } from "mongoose";
 
 const massageSchema = new Schema(
   {
-    body: {
+    content: {
       type: String,
       required: true,
     },
@@ -19,7 +19,10 @@ const massageSchema = new Schema(
   },
   {
     timestamps: true,
+    versionKey: false,
   },
 );
 
-export const Massage = model("massage", massageSchema);
+const Massage = model("massage", massageSchema);
+
+export default Massage;
