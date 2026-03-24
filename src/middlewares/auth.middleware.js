@@ -9,15 +9,22 @@ export const isAuthentecate = async (req, res, next) => {
         if (!autherization.startsWith("Bearer ")) {
             return res.status(401).json({ status: false, massage: "invalied bearer" });
         }
-        const [berar, token] = autherization.split(" ");
+        const [bearer, token] = autherization.split(" ");
         if (!token) {
             return res.status(401).json({ status: false, massage: "unauthorized" });
         }
-        const { userId } = jwt.verify(token, process.env.JWT_SECRET);
+        const { userId , iat } = jwt.verify(token, process.env.JWT_SECRET);
         const user = await User.findById(userId);
         if (!user) {
             return res.status(401).json({ status: false, massage: "unauthorized" });
         }
+        if (user.isDeleted) {
+            return res.status(401).json({ status: false, massage: "unauthorized" });
+        }
+        if (user.deletedAt && user.deletedAt.getTime() > iat * 1000) {
+            return res.status(401).json({ status: false, massage: "unauthorized" });
+        }
+
         req.user = user;
         next();
     } catch (error) {

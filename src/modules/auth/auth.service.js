@@ -55,6 +55,12 @@ export const login = async (req, res, next) => {
       expiresIn: "1d"
     }
   })
+
+  if (user.isDeleted) {
+    await User.findByIdAndUpdate(user.id, { isDeleted: false});
+  }
+
+
   return res
     .status(200)
     .json({ status: true, massage: "login success", token, data: user });

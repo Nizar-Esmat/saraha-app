@@ -5,4 +5,6 @@ import asyncHandler from "../../utils/error/async-handler.js";
 const router = Router();
 
 router.get("/", isAuthentecate, asyncHandler(userService.getMe));
+
+router.delete("/freeze", isAuthentecate, asyncHandler(userService.freezeAccount));
 export default router;
