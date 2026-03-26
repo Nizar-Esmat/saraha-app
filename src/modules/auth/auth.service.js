@@ -33,9 +33,6 @@ export const register = async (req, res, next) => {
     message: `click on this link to verify your email `,
     html: `<a href="${link}">click here to verify your email</a>`
   })
-  if (!isSent) {
-    return next(new Error("email did not sent", { cause: 500 }));
-  }
 
   const sendData = {
     userName: newUser.userName,
